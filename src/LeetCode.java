@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Stack;
 
 class LeetCode {
 
@@ -73,39 +74,25 @@ class LeetCode {
         char[] sArr = S.toCharArray();
         char[] tArr = T.toCharArray();
 
-        ArrayList<Character> sLst = new ArrayList<>();
-        ArrayList<Character> tLst = new ArrayList<>();
+        Stack<Character> sStack = new Stack<>();
+        Stack<Character> tStack = new Stack<>();
 
-        int tDeletes = 0;
-        int sDeletes = 0;
-        for (int i = 0; i < S.length() - 1; i++) {
-            if(S.charAt(i) != '#') {
-                sLst.add(S.charAt(i));
-            }
-            if(S.charAt(i) == '#') {
-                sDeletes++;
+        for(char c: sArr){
+            sStack.push(c);
+            if(c == '#') {
+                sStack.pop();
             }
         }
 
-        for (int i = 0; i < T.length() - 1; i++) {
-            if(T.charAt(i) != '#') {
-                tLst.add(T.charAt(i));
+        for(char c: tArr){
+            tStack.push(c);
+            if(c == '#') {
+                tStack.pop();
             }
-            if(T.charAt(i) == '#') {
-                tDeletes++;
-            }
-
         }
 
-        System.out.println(sLst.toString());
-        System.out.println(tLst.toString());
-
-
-        String sAns = "";
-        String tAns = "";
-
-        System.out.println(tAns);
-        return sAns.equals(tAns);
+        System.out.println(sStack.peek());
+        return false;
     }
 
     public int countElements(int[] arr) {
@@ -130,18 +117,8 @@ class LeetCode {
         LeetCode lc = new LeetCode();
 
         int[] nums = {1,3,2,3,5,0};
-        //System.out.println(lc.backspaceCompare("ab##", "c#d#"));
+        System.out.println(lc.backspaceCompare("ab##", "c#d#"));
 
-        //System.out.println(lc.countElements(nums));
-
-         MinStack obj = new MinStack();
-         obj.push(5);
-         obj.push(-3);
-         obj.push(-2);
-         obj.pop();
-         int param_3 = obj.top();
-         int param_4 = obj.getMin();
-        System.out.println(param_4);
     }
 }
 
