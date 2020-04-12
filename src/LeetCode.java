@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Stack;
+import java.util.*;
 
 class LeetCode {
 
@@ -125,23 +122,70 @@ class LeetCode {
         return count;
     }
 
-    public int diameterOfBinaryTree(TreeNode root) {
-        if(root.left == null || root.right == null){
-            return 1;
+
+    public int lastStoneWeight(int[] stones) {
+        int weight = 0;
+
+        //sort array
+        Arrays.sort(stones);
+
+        //create list
+        Stack<Integer> stoneStack = new Stack<>();
+
+        //copy values into list
+        for(int i: stones){
+            stoneStack.push(i);
         }
+        System.out.println(stoneStack.toString());
 
-        int goLeft = diameterOfBinaryTree(root.left);
-        int goRight = diameterOfBinaryTree(root.right);
+        /*
+        If x == y, both stones are totally destroyed;
+        If x != y, the stone of weight x is totally destroyed, and the stone of weight y has new weight y-x.
+         */
+        int x;
+        int y;
 
-        return goLeft + goRight;
+        while(stoneStack.size() > 1) {
+            y = stoneStack.pop();
+            x = stoneStack.pop();
+
+            if(x == y) {
+                x = 0;
+                y = 0;
+            }
+
+            if(x != y){
+                y = y - x;
+                stoneStack.push(y); //push y back since has not been destroyed
+
+                //copy to array to resort
+                ArrayList<Integer> recopy = new ArrayList<>();
+                for(Integer i : stoneStack){
+                    recopy.add(i);
+                }
+                Collections.sort(recopy);
+                stoneStack.clear();
+                for(Integer i : recopy){
+                    stoneStack.push(i);
+                }
+            }
+
+        }
+        //System.out.println(stoneStack.toString());
+
+        if(stoneStack.isEmpty()){
+            return 0;
+        }
+        weight = stoneStack.peek();
+        return weight;
     }
-
 
     public static void main(String[] args) {
         LeetCode lc = new LeetCode();
 
-        int[] nums = {1,3,2,3,5,0};
-        System.out.println(lc.backspaceCompare("ab##", "c#d#"));
+        int[] nums = {2,2};
+        //System.out.println(lc.backspaceCompare("ab##", "c#d#"));
+        System.out.println(lc.lastStoneWeight(nums));
 
     }
 }
