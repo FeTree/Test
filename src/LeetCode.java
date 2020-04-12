@@ -78,21 +78,34 @@ class LeetCode {
         Stack<Character> tStack = new Stack<>();
 
         for(char c: sArr){
-            sStack.push(c);
-            if(c == '#') {
+            if(c != '#') {
+                sStack.push(c);
+            }
+            else if (c == '#') {
                 sStack.pop();
             }
         }
 
         for(char c: tArr){
-            tStack.push(c);
-            if(c == '#') {
+            if(c != '#') {
+                tStack.push(c);
+            }
+            else if (c == '#' && !tStack.isEmpty()) {
                 tStack.pop();
             }
         }
 
-        System.out.println(sStack.peek());
-        return false;
+        String newS = "";
+        String newT = "";
+        for (int i = 0; i < sStack.size(); i++) {
+            newS += sStack.pop();
+        }
+        for (int i = 0; i < tStack.size(); i++) {
+            newT += tStack.pop();
+        }
+        System.out.println(newS);
+        System.out.println(newT);
+        return newS.equals(newT);
     }
 
     public int countElements(int[] arr) {
@@ -112,6 +125,17 @@ class LeetCode {
         return count;
     }
 
+    public int diameterOfBinaryTree(TreeNode root) {
+        if(root.left == null || root.right == null){
+            return 1;
+        }
+
+        int goLeft = diameterOfBinaryTree(root.left);
+        int goRight = diameterOfBinaryTree(root.right);
+
+        return goLeft + goRight;
+    }
+
 
     public static void main(String[] args) {
         LeetCode lc = new LeetCode();
@@ -119,6 +143,17 @@ class LeetCode {
         int[] nums = {1,3,2,3,5,0};
         System.out.println(lc.backspaceCompare("ab##", "c#d#"));
 
+    }
+}
+
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
     }
 }
 
