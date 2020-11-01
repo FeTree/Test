@@ -26,13 +26,26 @@ public class Project2 {
     public static void main(String[] args) throws FileNotFoundException {
         Project2 app = new Project2();
 
+        //read file and input into nums arraylist
         app.readFile(app.path);
+
+        // create an array list of points
         app.pointArrayList = app.createPointsArray(app.nums);
 
-        double l2Distance = app.findDistanceL2(app.pointArrayList);
-        System.out.println(app.pointArrayList);
-        System.out.println(l2Distance);
-        System.out.println(app.mostCentralL2);
+        //finds geometric center
+        Point center = app.findGeometricCenter(app.pointArrayList);
+
+        // call method to find manhattan l1 distance
+        double l1Distance = app.findDistanceL1(app.pointArrayList, center);
+
+        // call method to find l2 distance
+        double l2Distance = app.findDistanceL2(app.pointArrayList, center);
+
+        // print l1
+        System.out.println("(" + (int) center.getX() +"," + (int) center.getY() + ") " + (int)l1Distance);
+
+        // Print l2
+        System.out.println("(" + (int) center.getX() +"," + (int) center.getY() + ") " + (int)l2Distance);
 
     }
 
@@ -62,25 +75,69 @@ public class Project2 {
         return points;
     }
 
-    public double findDistanceL2(ArrayList<Point> arr) {
-        double smallest = Integer.MAX_VALUE;
-        double distance;
+    public Point findGeometricCenter(ArrayList<Point> arr) {
+        double xmax = Integer.MIN_VALUE;
+        double xmin = Integer.MAX_VALUE;
+        double ymax = Integer.MIN_VALUE;
+        double ymin = Integer.MAX_VALUE;
 
+        //find x max
         for (int i = 0; i < arr.size(); i++) {
-            for (int j = 1; j < arr.size() - 1; j++) {
-                distance = metricL2(arr.get(i), arr.get(j));
-                System.out.println(distance);
-
-                //keep track of smallest distance to return
-                if(smallest > distance) {
-                    smallest = distance;
-                    mostCentralL2 = arr.get(j);
-                }
+            if(xmax < arr.get(i).x) {
+                xmax = arr.get(i).x;
             }
         }
 
+        //find x min
+        for (int i = 0; i < arr.size(); i++) {
+            if(xmin > arr.get(i).x) {
+                xmin = arr.get(i).x;
+            }
+        }
 
-        return smallest;
+        //find y max
+        for (int i = 0; i < arr.size(); i++) {
+            if(ymax < arr.get(i).y) {
+                ymax = arr.get(i).y;
+            }
+        }
+
+        //find y min
+        for (int i = 0; i < arr.size(); i++) {
+            if(ymin > arr.get(i).y) {
+                ymin = arr.get(i).y;
+            }
+        }
+
+        int xcenter = (int) (xmax-xmin) / 2;
+        int ycenter = (int) (ymax-ymin) / 2;
+
+
+
+        Point centralPoint = new Point(xcenter, ycenter);
+        return centralPoint;
+    }
+
+    public double findDistanceL2(ArrayList<Point> arr, Point center) {
+        double smallest = Integer.MAX_VALUE;
+        double distance = 0;
+
+        for (int i = 0; i < arr.size(); i++) {
+            distance += metricL2(center, arr.get(i));
+        }
+
+        return distance;
+    }
+
+    public double findDistanceL1(ArrayList<Point> arr, Point center) {
+        double smallest = Integer.MAX_VALUE;
+        double distance = 0;
+
+        for (int i = 0; i < arr.size(); i++) {
+            distance += metricL1(center, arr.get(i));
+        }
+
+        return distance;
     }
 
     /*
