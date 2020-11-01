@@ -30,7 +30,9 @@ public class Project2 {
         app.pointArrayList = app.createPointsArray(app.nums);
 
         double l2Distance = app.findDistanceL2(app.pointArrayList);
+        System.out.println(app.pointArrayList);
         System.out.println(l2Distance);
+        System.out.println(app.mostCentralL2);
 
     }
 
@@ -64,15 +66,16 @@ public class Project2 {
         double smallest = Integer.MAX_VALUE;
         double distance;
 
-
         for (int i = 0; i < arr.size(); i++) {
             for (int j = 1; j < arr.size() - 1; j++) {
                 distance = metricL2(arr.get(i), arr.get(j));
-//                if(distance < smallest) {
-//                    smallest = distance;
-//                    mostCentralL2 = arr.get(i);
-//                }
-                System.out.println(smallest);
+                System.out.println(distance);
+
+                //keep track of smallest distance to return
+                if(smallest > distance) {
+                    smallest = distance;
+                    mostCentralL2 = arr.get(j);
+                }
             }
         }
 
@@ -113,6 +116,19 @@ public class Project2 {
         double x2 = p2.getX();
         double y2 = p2.getY();
         double distance = Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2));
+        return distance;
+    }
+
+    /*
+    Finds manhattan L1 metric
+     */
+    public double metricL1(Point p1, Point p2) {
+        double x1 = p1.getX();
+        double y1 = p1.getY();
+        double x2 = p2.getX();
+        double y2 = p2.getY();
+
+        double distance = (Math.abs(x1 - x2)) + (Math.abs(y1 - y2));
         return distance;
     }
 }
