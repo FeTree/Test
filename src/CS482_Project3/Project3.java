@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
+
 public class Project3 {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -13,6 +16,7 @@ public class Project3 {
         Project3 app = new Project3();
         ArrayList<Integer> allNums = app.readFile(path);
         allNums.remove(0);
+        System.out.println(allNums);
 
 
 
@@ -31,8 +35,70 @@ public class Project3 {
         Integer[] secondHalfI = Arrays.copyOf(secondHalfOBJ, secondHalfOBJ.length, Integer[].class);
         int[] secondHalf = app.toIntArray(secondHalfI);
 
-        System.out.println(app.mergeSortAndCount(allNumsArray, 0, allNumsArray.length-1));
+        System.out.println(app.findMedianSortedArrays(firstHalf, secondHalf, 0, firstHalf.length - 1, 0, secondHalf.length-1));
+        System.out.println(app.mergeSort(allNumsArray, 0, allNumsArray.length-1));
 
+    }
+
+    public double findMedian(int[] nums) {
+        if (nums.length % 2 == 0)
+            return ((double)nums[nums.length/2] + (double)nums[nums.length/2 - 1])/2;
+        else
+            return (double) nums[nums.length/2];
+    }
+
+    public double findMedianSortedArrays(int[] a, int[] b, int startIndexA, int endIndexA, int startIndexB, int endIndexB)
+    {
+
+
+        if ((endIndexA - startIndexA == 0) && ((endIndexB - startIndexB == 0)))
+        {
+            return (a[0] + b[0])/2;
+        }
+
+        if ((endIndexA - startIndexA == 1) && ((endIndexB - startIndexB == 1)))
+        {
+            return (1.0*(max(a[startIndexA], b[startIndexB]) + min(a[endIndexA], b[endIndexB])))/2;
+        }
+
+        double m1 = findMedian(a);
+        double m2 = findMedian(b);
+
+        if (m2 == m1)
+        {
+            return m2;
+        }
+
+        // first half median less than second half median, cross out anything less than first half median and anythibng greater than median of second half
+        if (m1 < m2)
+        {
+            if ((endIndexA - startIndexA) % 2 == 0) // we are looking at odd number of elements
+            {
+                startIndexA = startIndexA + (endIndexA - startIndexA) / 2;
+                endIndexB = startIndexB + (endIndexB - startIndexB) / 2;
+            }
+            else
+            {
+                startIndexA = startIndexA + (endIndexA - startIndexA) / 2;
+                endIndexB = startIndexB + (endIndexB - startIndexB) / 2 + 1;
+            }
+        }
+
+        // since m2 <= median <= m1 narrow down search by eliminating elements less than m2 and elements greater than m1
+        else // m2 < m1
+        {
+            if ((endIndexB - startIndexB) % 2 == 0) // we are looking at odd number of elements
+            {
+                startIndexB = startIndexB + (endIndexB - startIndexB) / 2;
+                endIndexA = startIndexA + (endIndexA - startIndexA) / 2;
+            }
+            else
+            {
+                startIndexB = startIndexB + (endIndexB - startIndexB) / 2;
+                endIndexA = startIndexA + (endIndexA - startIndexA) / 2 + 1;
+            }
+        }
+        return findMedianSortedArrays(a, b, startIndexA, endIndexA, startIndexB, endIndexB);
     }
 
 
@@ -53,7 +119,7 @@ public class Project3 {
         return ret;
     }
 
-    public int mergeAndCount(int[] arr, int l, int m, int r) {
+    public int countInversions(int[] arr, int l, int m, int r) {
 
         // Left subarray
         int[] left = Arrays.copyOfRange(arr, l, m + 1);
@@ -78,19 +144,19 @@ public class Project3 {
         return numOfSwaps;
     }
 
-    public int mergeSortAndCount(int[] arr, int left, int right) {
+    public int mergeSort(int[] arr, int left, int right) {
         int count = 0;
         if (left < right) {
             int m = (left + right) / 2;
 
             // Left Array
-            count += mergeSortAndCount(arr, left, m);
+            count += mergeSort(arr, left, m);
 
             // Right Array
-            count += mergeSortAndCount(arr, m + 1, right);
+            count += mergeSort(arr, m + 1, right);
 
             // count merge
-            count += mergeAndCount(arr, left, m, right);
+            count += countInversions(arr, left, m, right);
         }
         return count;
     }
