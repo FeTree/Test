@@ -92,45 +92,4 @@ public class Project3 {
         return new Object[]{firstHalf, secondHalf};
     }
 
-    public int countInversions(int[] arr, int l, int m, int r) {
-
-        // Left subarray
-        int[] left = Arrays.copyOfRange(arr, l, m + 1);
-
-        // Right subarray
-        int[] right = Arrays.copyOfRange(arr, m + 1, r + 1);
-
-        int i = 0;
-        int j = 0;
-        int k = l;
-        int numOfSwaps = 0;
-
-        while (i < left.length && j < right.length)
-        {
-            if (left[i] <= right[j])
-                arr[k++] = left[i++];
-            else {
-                arr[k++] = right[j++];
-                numOfSwaps += (m + 1) - (l + i);
-            }
-        }
-        return numOfSwaps;
-    }
-
-    public int mergeSort(int[] arr, int left, int right) {
-        int count = 0;
-        if (left < right) {
-            int m = (left + right) / 2;
-
-            // Left Array
-            count += mergeSort(arr, left, m);
-
-            // Right Array
-            count += mergeSort(arr, m + 1, right);
-
-            // count merge
-            count += countInversions(arr, left, m, right);
-        }
-        return count;
-    }
 }
