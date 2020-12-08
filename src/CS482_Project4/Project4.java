@@ -21,55 +21,6 @@ public class Project4 {
         System.out.println(getLongestPath(input));
     }
 
-    public int longestPath(int[][] input) {
-        int answer = 1;
-
-        int rows = input[0].length;
-        int columns = input.length;
-        int[][] opt = new int[rows][columns];
-
-        // Pointer to keep track of largest value in array so we dont have to search it
-        int largestValue = 0;
-
-        // Set all values to 1 in opt
-        for (int[] row: opt) {
-            Arrays.fill(row, 1);
-        }
-
-
-        for (int i = 0; i < rows ; i++) {
-            for (int j = 1; j < columns; j++) {
-                // Current is less than value to the right
-                System.out.println(input[i][j]);
-                if(i > 1) {
-                    if (input[i - 1][j] > input[i][j]) {
-                        opt[i][j] = 1 + opt[i - 1][j];
-                        //System.out.println("1st" + opt[i][j]);
-                    }
-
-                    //Current is less than value above it, increment by one
-
-                    else if (input[i][j - 1] > input[i][j]) {
-                        opt[i][j] = 1 + opt[i][j - 1];
-                        //System.out.println("2st" + opt[i][j]);
-                    }
-                }
-
-
-                // Check if its largest value
-                if(opt[i][j] > largestValue) {
-                    largestValue = opt[i][j];
-                }
-            }
-        }
-
-        System.out.println(Arrays.deepToString(opt));
-
-
-
-        return largestValue;
-    }
-
     public static int getLongestPath(int[][] input) {
         int largestValue = 0;
 
