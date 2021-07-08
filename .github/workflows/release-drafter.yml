@@ -27,11 +27,3 @@ jobs:
         #   disable-autolabeler: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-autolabeler: 
-  body:
-      - '-.([a-zA-Z]+( [a-zA-Z]+)+)'
-change_template: '- $TITLE (#$NUMBER) @$AUTHOR \n$BODY
-template: |
-  ## Change Log
-  $CHANGES
