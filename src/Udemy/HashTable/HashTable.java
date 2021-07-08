@@ -18,7 +18,7 @@ public class HashTable {
             System.out.println("Hash table size is, " + noOfSlots + ", not " +
                     "a prime number.");
             System.out.println("Size changed to: " + primeCount);
-            // So weak
+            // So weak lol please work
         }
     }
 
